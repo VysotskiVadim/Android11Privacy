@@ -21,10 +21,8 @@ class MainActivity : AppCompatActivity() {
         showCurrentPermissionStatus()
         locationButton.setOnClickListener {
             when {
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED -> {
+                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED -> {
                     // You can use the API that requires the permission.
                     text.text = getText(R.string.locationPermissionGranted)
                 }
