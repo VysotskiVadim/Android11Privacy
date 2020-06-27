@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Privacy in Android 11</string>
+    <string name="locationPermissionGranted">Location permission granted</string>
+    <string name="locationPermissionNotGranted">Location permission not granted</string>
+    <string name="locationPermissionDeclined">Location permission declined</string>
+    <string name="educationalContent">Give me permission, please🥺</string>
+</resources>

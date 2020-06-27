@@ -1,0 +1,2 @@
+rootProject.name='Privacy in Android 11'
+include ':app'
