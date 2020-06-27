@@ -1,8 +1,11 @@
 package by.android.academy.privacy
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         showCurrentPermissionStatus()
         locationButton.setOnClickListener {
             when {
@@ -64,6 +68,22 @@ class MainActivity : AppCompatActivity() {
         } else {
             text.text = getText(R.string.locationPermissionNotGranted)
             text.setTextColor(getColor(R.color.accessDeniedColor))
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.startForeground -> {
+                ContextCompat.startForegroundService(this, Intent(this, ForegroudService::class.java))
+                return true
+            }
+            else -> super.onContextItemSelected(item)
         }
     }
 }

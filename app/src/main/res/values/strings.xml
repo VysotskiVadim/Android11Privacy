@@ -4,4 +4,10 @@
     <string name="locationPermissionNotGranted">Location permission not granted</string>
     <string name="locationPermissionDeclined">Location permission declined</string>
     <string name="educationalContent">Give me permission, please🥺</string>
+    <string name="foregroundTitle">Freeze!</string>
+    <string name="foregroundTicker">Freeze!</string>
+    <string name="foregroundMessage">Bit brother is watching you!</string>
+    <string name="foregroundStart">Start foreground</string>
+    <string name="foregroundStop">Stop it!</string>
+    <string name="foregroundChannelName">ForegroundWatcherYou</string>
 </resources>
