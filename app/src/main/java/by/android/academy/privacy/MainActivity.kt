@@ -17,19 +17,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         showCurrentPermissionStatus()
+        updateLocation()
         locationButton.setOnClickListener {
             when {
                 checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED -> {
                     // You can use the API that requires the permission.
-                    text.text = getText(R.string.locationPermissionGranted)
+                    permissionStatus.text = getText(R.string.locationPermissionGranted)
                 }
-                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) && text.text != getText(R.string.educationalContent) -> {
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) && permissionStatus.text != getText(R.string.educationalContent) -> {
                     // In an educational UI, explain to the user why your app requires this
                     // permission for a specific feature to behave as expected.
-                    text.text = getText(R.string.educationalContent)
+                    permissionStatus.text = getText(R.string.educationalContent)
                 }
                 else -> {
                     // You can directly ask for the permission.
@@ -50,22 +50,37 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
         ) {
-            text.text = getText(R.string.locationPermissionGranted)
-            text.setTextColor(getColor(R.color.accessGrantedColor))
+            permissionStatus.text = getText(R.string.locationPermissionGranted)
+            permissionStatus.setTextColor(getColor(R.color.accessGrantedColor))
+            updateLocation()
         } else {
-            text.text = getText(R.string.locationPermissionDeclined)
-            text.setTextColor(getColor(R.color.accessDeniedColor))
+            permissionStatus.text = getText(R.string.locationPermissionDeclined)
+            permissionStatus.setTextColor(getColor(R.color.accessDeniedColor))
         }
     }
 
     private fun showCurrentPermissionStatus() {
         val isGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
         if (isGranted) {
-            text.text = getText(R.string.locationPermissionGranted)
-            text.setTextColor(getColor(R.color.accessGrantedColor))
+            permissionStatus.text = getText(R.string.locationPermissionGranted)
+            permissionStatus.setTextColor(getColor(R.color.accessGrantedColor))
         } else {
-            text.text = getText(R.string.locationPermissionNotGranted)
-            text.setTextColor(getColor(R.color.accessDeniedColor))
+            permissionStatus.text = getText(R.string.locationPermissionNotGranted)
+            permissionStatus.setTextColor(getColor(R.color.accessDeniedColor))
+        }
+    }
+
+    private fun updateLocation() {
+        val isGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (isGranted) {
+            val currentLocation = currentGPSLocation()
+            if (currentLocation != null) {
+                location.text = "lat: ${currentLocation.latitude}, long: ${currentLocation.longitude}"
+            } else {
+                location.text = "unable to get location"
+            }
+        } else {
+            location.text = ""
         }
     }
 
