@@ -48,6 +48,6 @@ class ExampleApplication : Application() {
     }
 
     private inline fun getStackTrace(): String {
-        return Throwable().stackTrace.toList().toString()
+        return Throwable().stackTrace.toList().joinToString(separator = "\n")
     }
 }
