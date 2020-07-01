@@ -71,17 +71,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateLocation() {
-        val isGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        if (isGranted) {
-            val currentLocation = currentGPSLocation()
-            if (currentLocation != null) {
-                location.text = "lat: ${currentLocation.latitude}, long: ${currentLocation.longitude}"
-            } else {
-                location.text = "unable to get location"
-            }
-        } else {
-            location.text = ""
-        }
+        location.text = formatLocation()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -93,7 +83,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.startForeground -> {
-                ContextCompat.startForegroundService(this, Intent(this, ForegroudService::class.java))
+                ContextCompat.startForegroundService(this, Intent(this, ForegroundService::class.java))
                 return true
             }
             else -> super.onContextItemSelected(item)

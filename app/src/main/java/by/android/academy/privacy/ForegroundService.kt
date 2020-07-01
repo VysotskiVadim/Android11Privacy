@@ -11,7 +11,7 @@ private const val FOREGROUND_NOTIFICATION_CHANNEL_ID = "foreground-example"
 private const val FOREGROUND_NOTIFICATION_ID = 11
 private const val STOP_FOREGROUND_SERVICE_ACTION = "stop-watching"
 
-class ForegroudService : Service() {
+class ForegroundService : Service() {
 
     override fun onBind(p0: Intent?): IBinder? = null
 
@@ -24,7 +24,7 @@ class ForegroudService : Service() {
         val stopService: PendingIntent = PendingIntent.getService(
             this,
             0,
-            Intent(this, ForegroudService::class.java).apply {
+            Intent(this, ForegroundService::class.java).apply {
                 action = STOP_FOREGROUND_SERVICE_ACTION
             },
             0
@@ -32,7 +32,7 @@ class ForegroudService : Service() {
 
         val notification: Notification = NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getText(R.string.foregroundTitle))
-            .setContentText(getText(R.string.foregroundMessage))
+            .setContentText(getString(R.string.watchingYou, formatLocation()))
             .setSmallIcon(R.drawable.ic_visibility_black_48dp)
             .setContentIntent(launchApp)
             .setTicker(getText(R.string.foregroundTicker))
