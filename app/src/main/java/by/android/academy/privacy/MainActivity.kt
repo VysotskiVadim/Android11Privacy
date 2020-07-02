@@ -20,24 +20,15 @@ class MainActivity : AppCompatActivity() {
         showCurrentPermissionStatus()
         updateLocation()
         locationButton.setOnClickListener {
-            when {
-                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
-                        PackageManager.PERMISSION_GRANTED -> {
-                    // You can use the API that requires the permission.
-                    permissionStatus.text = getText(R.string.locationPermissionGranted)
-                }
-                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) && permissionStatus.text != getText(R.string.educationalContent) -> {
-                    // In an educational UI, explain to the user why your app requires this
-                    // permission for a specific feature to behave as expected.
-                    permissionStatus.text = getText(R.string.educationalContent)
-                }
-                else -> {
-                    // You can directly ask for the permission.
-                    requestPermissions(
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                        LOCATION_PERMISSION_REQUEST_CODE
-                    )
-                }
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                permissionStatus.text = getText(R.string.locationPermissionGranted)
+            } else {
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
             }
         }
     }
