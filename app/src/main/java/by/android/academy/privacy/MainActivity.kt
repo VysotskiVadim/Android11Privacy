@@ -10,7 +10,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 private const val LOCATION_PERMISSION_REQUEST_CODE = 123
 
@@ -74,12 +77,12 @@ class MainActivity : AppCompatActivity() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
             PackageManager.PERMISSION_GRANTED
         ) {
-//            lifecycleScope.launch {
-//                userLocation.collect {
-//                    location.text = formatLocation(it)
-//                }
-//            }
             location.text = attributionContext.showLocation()
+            lifecycleScope.launch {
+                attributionContext.gpsLocation.collect {
+                    location.text = formatLocation(it)
+                }
+            }
         }
     }
 

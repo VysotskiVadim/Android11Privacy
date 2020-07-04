@@ -8,23 +8,24 @@ import android.location.LocationListener
 import android.location.LocationManager
 import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-val Context.userLocation: Flow<Location>
-    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION) get() {
-        return callbackFlow {
-            val locationCallback = object: LocationListener {
-                override fun onLocationChanged(p0: Location) {
-                    offer(p0)
-                }
-
-                override fun toString(): String {
-                    return "haha"
-                }
+val Context.gpsLocation: Flow<Location>
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION) get() = callbackFlow {
+        val locationCallback = object : LocationListener {
+            override fun onLocationChanged(p0: Location) {
+                offer(p0)
             }
-            val id = locationCallback.toString()
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10 * 1000, 1f, locationCallback)
+
+            override fun toString(): String {
+                return "haha"
+            }
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10 * 1000, 1f, locationCallback)
+        awaitClose {
+            locationManager.removeUpdates(locationCallback)
         }
     }
 
