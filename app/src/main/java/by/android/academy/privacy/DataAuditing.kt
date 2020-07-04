@@ -17,34 +17,33 @@ fun Context.setupDataAuditionCompat() {
 @TargetApi(Build.VERSION_CODES.R)
 fun Context.setupDataAudition() {
     val appOpsCallback = object : AppOpsManager.OnOpNotedCallback() {
-        private fun logPrivateDataAccess(opCode: String, trace: String) {
-            Log.i(
-                "data-audition",
-                "Private data accessed. Operation: $opCode\nStack Trace:\n$trace"
-            )
-        }
 
         override fun onNoted(syncNotedAppOp: SyncNotedAppOp) {
-            logPrivateDataAccess(
-                syncNotedAppOp.op, getStackTrace()
+            log(
+                syncNotedAppOp.op,
+                syncNotedAppOp.attributionTag,
+                Throwable().stackTrace.joinToString(separator = "\n")
             )
         }
 
         override fun onSelfNoted(syncNotedAppOp: SyncNotedAppOp) {
-            logPrivateDataAccess(
-                syncNotedAppOp.op, getStackTrace()
-            )
         }
 
         override fun onAsyncNoted(asyncNotedAppOp: AsyncNotedAppOp) {
-            logPrivateDataAccess(asyncNotedAppOp.op, asyncNotedAppOp.message)
+            log(
+                asyncNotedAppOp.op,
+                asyncNotedAppOp.attributionTag,
+                asyncNotedAppOp.message,
+                asyncNotedAppOp.time.toString(),
+                asyncNotedAppOp.notingUid.toString()
+            )
+        }
+
+        private fun log(vararg items: String?) {
+            Log.d("data-audition", items.joinToString(separator = "\n"))
         }
     }
 
     val appOpsManager = getSystemService(AppOpsManager::class.java) as AppOpsManager
     appOpsManager.setOnOpNotedCallback(mainExecutor, appOpsCallback)
-}
-
-private inline fun getStackTrace(): String {
-    return Throwable().stackTrace.toList().joinToString(separator = "\n")
 }

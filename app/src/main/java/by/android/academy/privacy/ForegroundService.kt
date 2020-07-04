@@ -32,7 +32,7 @@ class ForegroundService : Service() {
 
         val notification: Notification = NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getText(R.string.foregroundTitle))
-            .setContentText(getString(R.string.watchingYou, formatLocation()))
+            .setContentText(getString(R.string.watchingYou, showLocation()))
             .setSmallIcon(R.drawable.ic_visibility_black_48dp)
             .setContentIntent(launchApp)
             .setTicker(getText(R.string.foregroundTicker))
