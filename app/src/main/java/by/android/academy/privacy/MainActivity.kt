@@ -11,6 +11,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.evil.coolbutton.CoolButton
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -83,6 +84,9 @@ class MainActivity : AppCompatActivity() {
                     location.text = formatLocation(it)
                 }
             }
+            CoolButton.applyLocationEnabledStyle(locationButton)
+        } else {
+            CoolButton.applyLocationDisabledStyle(locationButton)
         }
     }
 
